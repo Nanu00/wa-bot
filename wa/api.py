@@ -4,7 +4,7 @@ import os, sys
 from py_asciimath.translator.translator import MathML2Tex
 
 # Uses the untangle lib to make the walpha api's xml output into a python object
-# NOT ANYMORE!!! we're using ET now
+# NOT ANYMORE!!! we're using lxml now
 
 class WaResponse:
 
@@ -56,8 +56,6 @@ class WaResponse:
         self.XML = ET.parse(self.resp)
         self.parsedResp = self.XML.getroot()
 
-        print(self.callURL)
-
         # self.parsedResp = self.parsedResp.findall('.//subpod[@title=Possible intermediate steps]/mathml')
 
         for i in self.parsedResp:
@@ -66,19 +64,19 @@ class WaResponse:
                     if j.tag == 'subpod' and j.attrib['title'] == 'Possible intermediate steps':
                         self.steps.append(j)
 
-        print(self.parsedResp)
-        print(self.steps)
+        self.transform = ET.XSLT(ET.parse("../latex/mmltex.xsl"))
 
-        print(str(ET.tostring(self.steps[0], encoding='ASCII')))
+        self.latex = []
 
-        self.transform = ET.XSLT(ET.parse("../latex/Vasil Yaroshevich's XSLT lib/mmltex.xsl"))
+        for i in self.steps:
+            self.latex.append(self.transform(self.steps[0]))
 
-        self.latex = self.transform(self.steps[0])
+        self.mathmltotex = MathML2Tex()
+        self.latex = self.mathmltotex.translate(str(ET.tostring(self.steps[0], encoding='ASCII')), network=False, from_file=False)
 
-        # self.mathmltotex = MathML2Tex()
-        # self.latex = self.mathmltotex.translate(str(ET.tostring(self.steps[0], encoding='ASCII')), network=False, from_file=False)
+        for i in self.latex:
+            print(i)
 
-        print(self.latex)
         print(self.callURL)
 
         return self.latex

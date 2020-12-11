@@ -41,9 +41,9 @@
 			<xsl:with-param name="content" select="."/>
 		</xsl:call-template>
 	</xsl:variable>
-	<xsl:text>\text{</xsl:text>
+	<xsl:text>\text{ </xsl:text>
 	<xsl:value-of select="$content"/>
-	<xsl:text>}</xsl:text>
+	<xsl:text> }</xsl:text>
 </xsl:template>
 
 <xsl:template match="m:mspace">
