@@ -64,7 +64,7 @@ class WaResponse:
                     if j.tag == 'subpod' and j.attrib['title'] == 'Possible intermediate steps':
                         self.steps.append(j)
 
-        self.transform = ET.XSLT(ET.parse("../latex/mmltex.xsl"))
+        self.transform = ET.XSLT(ET.parse("../latex/Vasil Yaroshevich's XSLT lib/mmltex.xsl"))
 
         self.latex = []
 
