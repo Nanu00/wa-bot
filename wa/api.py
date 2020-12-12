@@ -1,7 +1,6 @@
 import urllib.parse, urllib.request
 import lxml.etree as ET
 import os, sys
-from py_asciimath.translator.translator import MathML2Tex
 
 # Uses the untangle lib to make the walpha api's xml output into a python object
 # NOT ANYMORE!!! we're using lxml now
@@ -59,7 +58,7 @@ class WaResponse:
         # self.parsedResp = self.parsedResp.findall('.//subpod[@title=Possible intermediate steps]/mathml')
 
         for i in self.parsedResp:
-            if i.tag == 'pod' and i.attrib['title'] == 'Solutions':
+            if i.tag == 'pod' and (i.attrib['title'] == 'Solutions' or i.attrib['title'] == 'Definite integrals'):
                 for j in i:
                     if j.tag == 'subpod' and j.attrib['title'] == 'Possible intermediate steps':
                         self.steps.append(j)
@@ -71,12 +70,10 @@ class WaResponse:
         for i in self.steps:
             self.latex.append(self.transform(self.steps[0]))
 
-        self.mathmltotex = MathML2Tex()
-        self.latex = self.mathmltotex.translate(str(ET.tostring(self.steps[0], encoding='ASCII')), network=False, from_file=False)
-
         for i in self.latex:
             print(i)
 
         print(self.callURL)
+        print(self.steps)
 
         return self.latex
