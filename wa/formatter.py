@@ -59,6 +59,6 @@ with open('test.tex', 'w') as latex_file:
 
 subprocess.run(['latexmk', '-verbose', '-shell-escape', '-synctex=1', '-file-line-error', '-interaction=nonstopmode', '-pdf', 'test.tex'])
 
-subprocess.run(['pdftocairo', '-png', '-rx',  '300', '-ry', '300', '-transp', 'test.pdf', 'test'])
+subprocess.run(['pdftocairo', '-png', '-rx',  '500', '-ry', '500', '-transp', 'test.pdf', 'test'])
 
-subprocess.run(['magick', 'test-1.png', '-quality', '100', '-density', '300', '-trim', '-alpha', 'deactivate', '-negate', 'test-1.png'])
+subprocess.run(['magick', 'test-1.png', '-quality', '100', '-trim', '-alpha', 'deactivate', '-negate', 'test-1.png'])
