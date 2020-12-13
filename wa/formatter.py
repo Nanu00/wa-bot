@@ -10,7 +10,6 @@ a.getResp()
 a.parseResp()
 
 final_latex = r'''\documentclass{article}
-\author{wa-bot}
 
 \renewcommand{\baselinestretch}{1.5}
 \usepackage[cm]{fullpage}
@@ -18,6 +17,7 @@ final_latex = r'''\documentclass{article}
 \usepackage[document]{ragged2e}
 \usepackage{amsmath}
 \usepackage{amssymb}
+\usepackage{seqsplit}
 
 \begin{document}
 
@@ -26,7 +26,17 @@ final_latex = r'''\documentclass{article}
 \arraycolsep=1pt\def\arraystretch{1.2}
 
 \begin{center}
+
 '''
+
+substitutions = {
+        r'\\mathrm\{integral\}' : r'\\int',
+        # r'\\text\{ right bracketing bar \}' : r'\\right|',
+        # r'\\text\{ left bracketing bar \}' : r'\\left|',
+        r'\\text\{ left bracketing bar \}' : r'|',
+        r'\\text\{ right bracketing bar \}' : r'|',
+}
+
 
 for i in a.latex:
     latex = str(i)
@@ -36,15 +46,20 @@ for i in a.latex:
 
     while m:
         print(m.group(1))
-        latex = p.sub('\\\\text{ ' + m.group(1) + m.group(2) + '}', latex, 1)
+        # latex = p.sub('\\\\text{' + m.group(1) + m.group(2) + '}', latex, 1)
+        latex = p.sub('$' + m.group(1) + m.group(2) + '$', latex, 1)
         m = p.search(latex)
 
     latex = re.sub(r'\s+', r' ', latex)
     latex = re.sub(r'\\\\ ', r'\\\\\n', latex)
+    latex = re.sub(r'''[^\|a-zA-Z\{\}\s%\./\-:;,0-9@=\\"'\(\)_~\$\!&\`\?+#\^<>\[\]\*]''', r'', latex)
+
+    for j in substitutions:
+        latex = re.sub(j, substitutions[j], latex)
 
     latex = latex.strip()
 
-    final_latex += latex
+    final_latex += '\section{Solution ' + str(a.latex.index(i)) + '}\n' + latex + '\n\n'
 
 final_latex += r'''
 \end{center}

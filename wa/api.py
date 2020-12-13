@@ -58,7 +58,7 @@ class WaResponse:
         # self.parsedResp = self.parsedResp.findall('.//subpod[@title=Possible intermediate steps]/mathml')
 
         for i in self.parsedResp:
-            if i.tag == 'pod' and (i.attrib['title'] == 'Solutions' or i.attrib['title'] == 'Definite integrals'):
+            if i.tag == 'pod' and (i.attrib['title'] == 'Solutions' or i.attrib['title'] == 'Definite integrals' or True):
                 for j in i:
                     if j.tag == 'subpod' and j.attrib['title'] == 'Possible intermediate steps':
                         self.steps.append(j)
