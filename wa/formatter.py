@@ -59,7 +59,7 @@ for i in a.latex:
 
     latex = latex.strip()
 
-    final_latex += '\section{Solution ' + str(a.latex.index(i)) + '}\n' + latex + '\n\n'
+    final_latex += '\section{Solution ' + str(a.latex.index(i) + 1) + '}\n' + latex + '\n\n'
 
 final_latex += r'''
 \end{center}
@@ -73,7 +73,6 @@ with open('test.tex', 'w') as latex_file:
     latex_file.write(final_latex)
 
 subprocess.run(['latexmk', '-verbose', '-shell-escape', '-synctex=1', '-file-line-error', '-interaction=nonstopmode', '-pdf', 'test.tex'])
-
+subprocess.run(['latexmk', '-c', '-pdf', 'test.tex'])
 subprocess.run(['pdftocairo', '-png', '-rx',  '500', '-ry', '500', '-transp', 'test.pdf', 'test'])
-
 subprocess.run(['magick', 'test-1.png', '-quality', '100', '-trim', '-alpha', 'deactivate', '-negate', 'test-1.png'])
