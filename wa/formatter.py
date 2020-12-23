@@ -1,7 +1,6 @@
 #!/bin/python
 
 import re, api, subprocess
-from latex import build_pdf
 
 a = api.WaResponse(open('appid').readline().strip('\n'))
 
