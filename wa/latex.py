@@ -67,8 +67,8 @@ def mkimg(latex, filename):
     with open(filename + '.tex', 'w') as latex_file:
         latex_file.write(latex)
 
-    subprocess.run(['latexmk', '-verbose', '-shell-escape', '-synctex=1', '-file-line-error', '-interaction=nonstopmode', '-pdf', filename + '.tex'])
-    subprocess.run(['latexmk', '-c', '-pdf', filename + '.tex'])
+    subprocess.run(['latexmk', '-verbose', '-shell-escape', '-synctex=1', '-file-line-error', '-interaction=nonstopmode', '-jobname=../output-folder/' + filename, '-pdf', filename + '.tex'])
+    # subprocess.run(['latexmk', '-c', '-pdf', filename + '.tex'])
     subprocess.run(['pdftocairo', '-png', '-rx',  '500', '-ry', '500', '-transp', filename + '.tex', filename])
     subprocess.run(['magick', 'test-1.png', '-quality', '100', '-trim', '-alpha', 'deactivate', '-negate', filename + '-1.png'])
 
